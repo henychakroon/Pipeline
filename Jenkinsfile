@@ -1,28 +1,33 @@
 pipeline {
     agent any
-    tools{ jdk 'JDK17' }
-    environment { JAVA_HOME = '/usr/lib/jvm/java-17-openjdk-amd64/' }
+    tools {
+        jdk 'JDK17' // Assurez-vous que JDK17 est configuré dans Jenkins
+        maven 'Maven3.9.9' // Assurez-vous que Maven3.9.9 est configuré dans Jenkins
+    }
+    environment { 
+        JAVA_HOME = 'C:\\Program Files\\Java\\jdk-17' // Chemin Java pour Windows
+    }
     stages {
-        stage ('Compile Stage') {
+        stage('Compile Stage') {
             steps {
-                withMaven(maven : 'Maven3.9.9') {
-                    sh 'mvn clean compile'
+                withMaven(maven: 'Maven3.9.9') {
+                    bat 'mvn clean compile'
                 }
             }
         }
-        stage ('Testing Stage') {
+        stage('Testing Stage') {
             steps {
-                withMaven(maven : 'Maven3.9.9') {
-                    sh 'mvn test'
+                withMaven(maven: 'Maven3.9.9') {
+                    bat 'mvn test'
                 }
             }
         }
-        stage ('Install Stage') {
+        stage('Install Stage') {
             steps {
-                withMaven(maven : 'Maven3.9.9') {
-                    sh 'mvn install -Dmaven.test.skip=true'
-                } 
-            } 
-        } 
+                withMaven(maven: 'Maven3.9.9') {
+                    bat 'mvn install -Dmaven.test.skip=true'
+                }
+            }
+        }
     }
 }
